@@ -117,12 +117,15 @@ public class Quad {
         Point o = this.pos.mathToScreen(w);
         int d = Math.max(Math.min(255,255-(int) (this.m/2000000*255)),0);
 //        System.out.println(d);
-        g.setColor(new Color(255,d,d));
+        g.setColor(new Color(255,0,0));
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(1));
         g2.drawRect((int) o.x, (int) (o.y-size.y*w.scale), (int) ( size.x*w.scale), (int) (size.y*w.scale));
-//        g.setColor(Color.green);
 //        Point p = this.COM.mathToScreen(w);
-//        if(m>0)g.drawOval((int)p.x,(int)p.y,10,10);
+//        g.setColor(Color.green);
+//        g.fillOval((int) p.x, (int) p.y,2,5);
+        g.setColor(new Color(0,Math.max(0,Math.min(254*(10-this.depth)/10,255)),0));
+        Point p = this.COM.mathToScreen(w);
+        if(m>0)g.fillOval((int)p.x,(int)p.y,5,5);
     }
 }

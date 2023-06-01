@@ -31,7 +31,7 @@ public class Main {
             double dis = r.nextDouble()*l*10+5*l;
             double a = r.nextGaussian()*Math.PI*2;
             Point p = new Point(dis*Math.cos(a),dis*Math.sin(a));
-            double m = 1.0e1*r.nextInt(10);
+            double m = 10;
             bodies.add(new Body(p,m));
             double v = r.nextDouble()*100;
             center.setOrbit(bodies.getLast());
@@ -40,21 +40,21 @@ public class Main {
 //            bodies.getLast().vel = (new Point(v*Math.sin(a),-v*Math.cos(a))).scale(100);
         }
 
-        for (int i = 0; i < 10000; i++) {
-            double dis = r.nextDouble()*l+2*l;
-            double a = r.nextGaussian()*Math.PI*2;
-            Point p = (new Point(dis*Math.cos(a),dis*Math.sin(a))).add(offset);
-            double m = 1.0e10*r.nextInt(100000);
-            bodies.add(new Body(p,m,Color.blue));
-            double v = r.nextDouble()*100;
-
-            center2.setOrbit(bodies.getLast());
-            bodies.getLast().vel = bodies.getLast().vel.add(new Point(v,0));
-//            bodies.getLast().vel = (new Point(-v*Math.sin(a),v*Math.cos(a)));
-        }
+//        for (int i = 0; i < 10000; i++) {
+//            double dis = r.nextDouble()*l+2*l;
+//            double a = r.nextGaussian()*Math.PI*2;
+//            Point p = (new Point(dis*Math.cos(a),dis*Math.sin(a))).add(offset);
+//            double m = 1.0e10*r.nextInt(100000);
+//            bodies.add(new Body(p,m,Color.blue));
+//            double v = r.nextDouble()*100;
+//
+//            center2.setOrbit(bodies.getLast());
+//            bodies.getLast().vel = bodies.getLast().vel.add(new Point(v,0));
+////            bodies.getLast().vel = (new Point(-v*Math.sin(a),v*Math.cos(a)));
+//        }
 
         bodies.add(center);
-        bodies.add(center2);
+//        bodies.add(center2);
 
         Window w = new Window(800,800);
         w.bodies = bodies;

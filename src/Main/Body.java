@@ -49,7 +49,7 @@ public class Body {
 
     public void setOrbit(Body b){
         Point r = this.pos.minus(b.pos);
-        double v = Math.sqrt(Quad.G*(this.mass+b.mass)/r.magnitude());
+        double v = Math.sqrt(Quad.G*(this.mass)/r.magnitude());
 
         b.vel = (new Point(r.y,-r.x)).scale(v/r.magnitude());
     }
@@ -74,7 +74,10 @@ public class Body {
         Point p = this.pos.mathToScreen(w);
         g.setColor(this.color);
 
-        g.fillOval((int) (p.x-radius*w.scale), (int) (p.y-radius*w.scale), (int) Math.max(2, this.radius*w.scale*2), (int) Math.max(2, this.radius* w.scale*2));
+        g.fillOval((int) (p.x-radius*w.scale), (int) (p.y-radius*w.scale), (int) Math.max(3, this.radius*w.scale*2), (int) Math.max(3, this.radius* w.scale*2));
+        g.setColor(Color.blue);
+        Point p2 = p.add(this.acc.scale(5/this.acc.magnitude()));
+        g.drawLine((int) (p.x-radius*w.scale), (int)( p.y-radius*w.scale), (int) (p2.x-radius*w.scale), (int) (p2.y-radius*w.scale));
         g.setColor(Color.black);
         if(this.radius*w.scale*2>4)g.drawOval((int) (p.x-radius*w.scale), (int) (p.y-radius*w.scale), (int) Math.max(2, this.radius*w.scale*2), (int) Math.max(2, this.radius* w.scale*2));
     }
