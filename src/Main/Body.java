@@ -47,11 +47,14 @@ public class Body {
         update(0);
     }
 
-    public void setOrbit(Body b){
+    public void setOrbit(Body b, int dir){
         Point r = this.pos.minus(b.pos);
-        double v = Math.sqrt(Quad.G*(this.mass)/r.magnitude());
+        double v = Math.sqrt(0.999*(Quad.G*this.mass)/r.magnitude());
 
-        b.vel = (new Point(r.y,-r.x)).scale(v/r.magnitude());
+        if (dir >=0)
+            b.vel = (new Point(r.y,-r.x)).scale(v/r.magnitude());
+        else
+            b.vel = (new Point(-r.y,r.x)).scale(v/r.magnitude());
     }
 
     public void update(double t){
@@ -75,9 +78,12 @@ public class Body {
         g.setColor(this.color);
 
         g.fillOval((int) (p.x-radius*w.scale), (int) (p.y-radius*w.scale), (int) Math.max(3, this.radius*w.scale*2), (int) Math.max(3, this.radius* w.scale*2));
-        g.setColor(Color.blue);
+//        g.setColor(Color.blue);
         Point p2 = p.add(this.acc.scale(5/this.acc.magnitude()));
-        g.drawLine((int) (p.x-radius*w.scale), (int)( p.y-radius*w.scale), (int) (p2.x-radius*w.scale), (int) (p2.y-radius*w.scale));
+//        Point p3 = p.add(this.vel.scale(5/this.vel.magnitude()));
+        //g.drawLine((int) (p.x), (int)( p.y), (int) (p2.x), (int) (p2.y));
+//        g.setColor(Color.green);
+//        g.drawLine((int) (p.x), (int)( p.y), (int) (p3.x), (int) (p3.y));
         g.setColor(Color.black);
         if(this.radius*w.scale*2>4)g.drawOval((int) (p.x-radius*w.scale), (int) (p.y-radius*w.scale), (int) Math.max(2, this.radius*w.scale*2), (int) Math.max(2, this.radius* w.scale*2));
     }

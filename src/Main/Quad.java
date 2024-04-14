@@ -11,7 +11,7 @@ public class Quad {
     public int depth;
     public Point pos,size,COM;
     public Body b = null;
-    public static double THRESH = 0.7;
+    public static double THRESH = 5;
     public static final double G = 6.67e-11;
     public Quad(Point pos, Point size){
         this.pos = pos.clone();
@@ -28,19 +28,21 @@ public class Quad {
         this.depth = d;
 //        System.out.println(this.pos +" To "+this.pos.add(this.size));
     }
-    public Point calcForce(Body b){
+    public Point calcForce(Body p){
         Point f = new Point(0,0);
-        Point r = COM.minus(b.pos);
+        Point r = COM.minus(p.pos);
         double d = r.magnitude();
-        if (d>10) {
+        if (d>1) {
             double t = d/this.size.x;
             if (t > THRESH | children == null) {
+//                System.out.print("Close: ");
                 r = r.scale(1/d);
-                if(b != this.b)
-                    f=f.add(r.scale(G * this.m * b.mass / Math.pow(d, 2)));
+                if(p != this.b)
+                    f=f.add(r.scale(G * this.m * p.mass / Math.pow(d, 2)));
             } else {
+//                System.out.print("Far: ");
                 for (Quad q : children) {
-                    f=f.add(q.calcForce(b));
+                    f=f.add(q.calcForce(p));
                 }
             }
         }
@@ -58,8 +60,6 @@ public class Quad {
                     q.add(p);
                     break;
                 }
-            }
-            for(Quad q:children){
                 if (q.contains(b.pos)) {
                     q.add(b);
                     break;
@@ -69,8 +69,6 @@ public class Quad {
         }
         else if (children == null){
                 this.b = p;
-                this.m = p.mass;
-                this.COM = p.pos.clone();
         }else{
             for(Quad q:children){
                 if (q.contains(p.pos)) {
@@ -80,13 +78,18 @@ public class Quad {
             }
         }
         if (children != null){
-            this.COM = this.pos.add(this.size.scale(.5));
+            this.COM = new Point(0,0);
             this.m = 0;
             for(Quad q:children){
                 this.m += q.m;
                 this.COM.add(q.COM.scale(q.m));
             }
             this.COM.scale(1/this.m);
+        }else{
+            if (b!=null){
+                this.m = this.b.mass;
+                this.COM = b.pos.clone();
+            }
         }
     }
 
@@ -110,22 +113,22 @@ public class Quad {
     }
     public void paint(Graphics g, Window w){
         if (this.children != null){
-            for (Quad q:children)
+            for (Quad q:this.children)
                 q.paint(g,w);
         }
 //        System.out.println(pos+":"+size);
         Point o = this.pos.mathToScreen(w);
-        int d = Math.max(Math.min(255,255-(int) (this.m/2000000*255)),0);
+        //int d = Math.max(Math.min(255,255-(int) (this.m/2000000*255)),0);
 //        System.out.println(d);
         g.setColor(new Color(255,0,0));
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(1));
         g2.drawRect((int) o.x, (int) (o.y-size.y*w.scale), (int) ( size.x*w.scale), (int) (size.y*w.scale));
-//        Point p = this.COM.mathToScreen(w);
-//        g.setColor(Color.green);
-//        g.fillOval((int) p.x, (int) p.y,2,5);
-        g.setColor(new Color(0,Math.max(0,Math.min(254*(10-this.depth)/10,255)),0));
-        Point p = this.COM.mathToScreen(w);
-        if(m>0)g.fillOval((int)p.x,(int)p.y,5,5);
+        //Point p = this.COM.mathToScreen(w);
+        g.setColor(Color.green);
+        //if(this.m > 0)g.fillOval((int) p.x, (int) p.y,10,10);
+        //g.setColor(new Color(0,Math.max(0,Math.min(254*(10-this.depth)/10,255)),0));
+        //Point p = this.COM.mathToScreen(w);
+        //if(m>0)g.fillOval((int)p.x,(int)p.y,5,5);
     }
 }

@@ -12,9 +12,9 @@ public class Window extends JFrame implements KeyListener, MouseListener, MouseM
     public double time = 0;
     public double total;
     private Point MOUSE = null;
-    public double scale = .000000000000005;
+    public double scale = 0.00000000000000000043;
 
-    public double timestep = Math.pow(20,8);
+    public double timestep = Math.pow(22,10);
     public Point cam = new Point(0,0);
     public LinkedList<Body> bodies;
     double camSpeed = 10;
